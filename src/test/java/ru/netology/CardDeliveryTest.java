@@ -17,7 +17,7 @@ public class CardDeliveryTest {
     @BeforeAll
     static void setupAll(){
         Configuration.browser = "chrome";
-        Configuration.browserBinary = "/Applications/Google Chrome.app/Contents/Windows/Google Chrome";
+        Configuration.browserBinary = "/Applications/Google Chrome";
     }
     private String generateDate(int addDays, String pattern) {
         return LocalDate.now().plusDays(addDays).format(DateTimeFormatter.ofPattern(pattern));
@@ -33,10 +33,9 @@ public class CardDeliveryTest {
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+71234567890");
         $("[data-test-id='agreement']").click();
-        $("button").click();
-        $(".notification__content").shouldBe(Condition.visible,
-                Duration.ofSeconds(15)).shouldHave(Condition.exactText("Встреча успешно забронирована на"));
-
+        $(".button").click();
+        $(".notification__content").shouldHave(Condition.text("Встреча успешно забронирована на " + planingDate), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
     }
 
 }
